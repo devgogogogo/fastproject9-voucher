@@ -1,5 +1,6 @@
 package com.fastcampus.projectvoucher.storage.voucher;
 
+import com.fastcampus.projectvoucher.common.type.VoucherAmountType;
 import com.fastcampus.projectvoucher.common.type.VoucherStatusType;
 import com.fastcampus.projectvoucher.storage.BaseEntity;
 import jakarta.persistence.*;
@@ -7,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Getter
 @Entity
@@ -22,9 +22,11 @@ public class VoucherEntity extends BaseEntity {
     private VoucherStatusType status;
     private LocalDate validFrom;  //사용 유효기간
     private LocalDate validTo;
-    private Long amount;
 
-    public VoucherEntity(String code, VoucherStatusType status, LocalDate validFrom, LocalDate validTo, Long amount) {
+    @Enumerated(EnumType.STRING)
+    private VoucherAmountType amount;
+
+    public VoucherEntity(String code, VoucherStatusType status, LocalDate validFrom, LocalDate validTo, VoucherAmountType amount) {
         this.code = code;
         this.status = status;
         this.validFrom = validFrom;

@@ -1,5 +1,6 @@
 package com.fastcampus.projectvoucher.domain.service;
 
+import com.fastcampus.projectvoucher.common.type.VoucherAmountType;
 import com.fastcampus.projectvoucher.common.type.VoucherStatusType;
 import com.fastcampus.projectvoucher.storage.voucher.VoucherEntity;
 import com.fastcampus.projectvoucher.storage.voucher.VoucherRepository;
@@ -36,7 +37,7 @@ public class VoucherServiceDynamicTest {
                     //Given
                     LocalDate validFrom = LocalDate.now();
                     LocalDate validTo = LocalDate.now().plusDays(30);
-                    Long amount = 10000L;
+                    VoucherAmountType amount = VoucherAmountType.KRW_30000;
 
                     //When
                     String code = voucherService.publish(validFrom, validTo, amount);
@@ -72,7 +73,7 @@ public class VoucherServiceDynamicTest {
                     //Given
                     LocalDate validFrom = LocalDate.now();
                     LocalDate validTo = LocalDate.now().plusDays(30);
-                    Long amount = 10000L;
+                    VoucherAmountType amount = VoucherAmountType.KRW_30000;
                     String code = voucherService.publish(validFrom, validTo, amount);
                     codes.add(code);
 

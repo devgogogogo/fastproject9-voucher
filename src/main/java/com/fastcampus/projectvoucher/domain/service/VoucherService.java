@@ -1,5 +1,6 @@
 package com.fastcampus.projectvoucher.domain.service;
 
+import com.fastcampus.projectvoucher.common.type.VoucherAmountType;
 import com.fastcampus.projectvoucher.common.type.VoucherStatusType;
 import com.fastcampus.projectvoucher.storage.voucher.VoucherEntity;
 import com.fastcampus.projectvoucher.storage.voucher.VoucherRepository;
@@ -19,7 +20,7 @@ public class VoucherService {
 
     //상품권 발행
     @Transactional
-    public String publish(LocalDate validFrom, LocalDate validTo, Long amount) {
+    public String publish(LocalDate validFrom, LocalDate validTo, VoucherAmountType amount) {
         final String code = UUID.randomUUID().toString().toUpperCase().replaceAll("-", "");
         VoucherEntity voucherEntity = new VoucherEntity(code, VoucherStatusType.PUBLISH, validFrom, validTo, amount);
         return voucherRepository.save(voucherEntity).getCode();
