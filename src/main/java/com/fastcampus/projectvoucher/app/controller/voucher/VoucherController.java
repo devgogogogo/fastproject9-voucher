@@ -6,6 +6,7 @@ import com.fastcampus.projectvoucher.app.controller.voucher.response.VoucherDisa
 import com.fastcampus.projectvoucher.app.controller.voucher.response.VoucherPublishResponse;
 import com.fastcampus.projectvoucher.app.controller.voucher.response.VoucherPublishV2Response;
 import com.fastcampus.projectvoucher.app.controller.voucher.response.VoucherUseV2Response;
+import com.fastcampus.projectvoucher.common.dto.RequestContext;
 import com.fastcampus.projectvoucher.domain.service.VoucherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,7 +45,11 @@ public class VoucherController {
     //상품권 발행 v2
     @PostMapping("/api/v2/voucher")
     public VoucherPublishV2Response publishV2(@RequestBody VoucherPublishV2Request request) {
-        final String publishedVoucherCode = voucherService.publishV2(request.requesterType(), request.requesterId(),LocalDate.now(), LocalDate.now().plusDays(1830L), request.amountType());
+        final String publishedVoucherCode = voucherService.publishV2(
+                new RequestContext(request.requesterType(),request.requesterId()),
+                LocalDate.now(),
+                LocalDate.now().plusDays(1830L),
+                request.amountType());
         final String orderId = UUID.randomUUID().toString().toUpperCase().replaceAll("-", "");
         return new VoucherPublishV2Response(orderId,publishedVoucherCode);
     }
@@ -53,7 +58,7 @@ public class VoucherController {
     @PutMapping("/api/v2/voucher/use")
     public VoucherUseV2Response useV2(@RequestBody VoucherUseV2Request request) {
         final String orderId = UUID.randomUUID().toString().toUpperCase().replaceAll("-", "");
-        voucherService.useV2(request.requesterType(),request.requestId(),request.code());
+        voucherService.useV2(new RequestContext(request.requesterType(), request.requestId()),request.code());
 
         return new VoucherUseV2Response(orderId);
     }
@@ -62,7 +67,7 @@ public class VoucherController {
     @PutMapping("/api/v2/voucher/disable")
     public VoucherDisableV2Response disableV2(@RequestBody VoucherDisableV2Request request) {
         final String orderId = UUID.randomUUID().toString().toUpperCase().replaceAll("-", "");
-        voucherService.disableV2(request.requesterType(),request.requesterId(),request.code());
+        voucherService.disableV2(new RequestContext(request.requesterType(),request.requesterId()),request.code());
 
         return new VoucherDisableV2Response(orderId);
     }
