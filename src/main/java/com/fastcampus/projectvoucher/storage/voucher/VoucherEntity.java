@@ -29,8 +29,11 @@ public class VoucherEntity extends BaseEntity {
         this.status = status;
         this.validFrom = validFrom;
         this.validTo = validTo;
-
         this.amount = amount;
+    }
+
+    public void disable() {
+        this.status = VoucherStatusType.DISABLE;
     }
 }
 
