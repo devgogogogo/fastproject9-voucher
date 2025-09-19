@@ -3,8 +3,8 @@ package com.fastcampus.projectvoucher.config;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-@Configuration
-@EnableJpaAuditing
-public class JpaAuditConfig {
-
-}
+//@Configuration
+//@EnableJpaAuditing
+//public class JpaAuditConfig {
+//
+//}

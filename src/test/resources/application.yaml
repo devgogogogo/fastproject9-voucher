@@ -17,6 +17,4 @@ spring:
 
 logging:
   level:
-    # spring boot 2.x, hibernate 5.x 에서 가능한 설정
-    #    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
     org.hibernate.orm.jdbc.bind: trace
