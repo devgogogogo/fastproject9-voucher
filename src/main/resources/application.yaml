@@ -16,3 +16,9 @@ spring:
     password: root1234
     driver-class-name: com.mysql.cj.jdbc.Driver #JDBC 드라이버는 자바에서 DB에 연결할 수 있게 해주는 "운전사" 같은 거야
     ## com.mysql.cj.jdbc.Driver 는 "MySQL 최신 JDBC 드라이버"의 공식 클래스 이름이야.
+
+logging:
+  level:
+    # spring boot 2.x, hibernate 5.x 에서 가능한 설정
+    #    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.hibernate.orm.jdbc.bind: trace

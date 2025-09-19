@@ -2,8 +2,12 @@ package com.fastcampus.projectvoucher.domain.employee;
 
 import com.fastcampus.projectvoucher.app.controller.request.EmployeeCreateRequest;
 import com.fastcampus.projectvoucher.app.controller.response.EmployeeResponse;
+import com.fastcampus.projectvoucher.storage.employee.EmployeeEntity;
+import com.fastcampus.projectvoucher.storage.employee.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,18 +16,19 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class EmployeeService {
 
-    private final Map<Long, EmployeeResponse> employeeResponseMap = new HashMap<>();
+    private final EmployeeRepository employeeRepository;
 
 //    //사원 생성
-    public Long create(EmployeeCreateRequest request) {
-        Long no = employeeResponseMap.size() + 1L;
-        employeeResponseMap.put(no,new EmployeeResponse(no, request.name(), request.position(), request.department()));
-        return no;
+    public Long create(String name, String position, String department) {
+
+        EmployeeEntity employeeEntity = employeeRepository.save(new EmployeeEntity(name, position, department));
+        return employeeEntity.getId();
     }
 
     //사원 조회
     public EmployeeResponse get(Long no) {
-        return employeeResponseMap.get(no);
+        EmployeeEntity employeeEntity = employeeRepository.findById(no).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+       return new EmployeeResponse(employeeEntity.getId(),employeeEntity.getName(),employeeEntity.getPosition(),employeeEntity.getDepartment());
     }
 
 

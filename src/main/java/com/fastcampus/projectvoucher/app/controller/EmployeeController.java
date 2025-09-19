@@ -7,9 +7,6 @@ import com.fastcampus.projectvoucher.domain.employee.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @RestController
 @RequiredArgsConstructor
 public class EmployeeController {
@@ -19,8 +16,7 @@ public class EmployeeController {
     //사원 생성
     @PostMapping("/api/v1/employee/")
     public Long create(@RequestBody EmployeeCreateRequest request) {
-        Long no = employeeService.create(request);
-        return no;
+        return employeeService.create(request.name(),request.position(),request.department());
     }
 
     //사원 조회
