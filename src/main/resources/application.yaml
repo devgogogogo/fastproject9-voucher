@@ -1,1 +1,18 @@
 spring.application.name: project-voucher
+
+spring:
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect #Hibernate가 SQL을 만들 때 "너 지금 MySQL 쓰는구나!" 하고 맞는 문법으로 변환해주는 게 이 설정이야.
+        format_sql: true # JPA가 SQL 쿼리를 출력할 때 줄바꿈과 들여쓰기를 해서 사람이 읽기 쉽게 보여주는 옵션이야.
+  datasource:
+    url: jdbc:mysql://localhost:13306/project-voucher-mysql
+    username: root
+    password: root1234
+    driver-class-name: com.mysql.cj.jdbc.Driver #JDBC 드라이버는 자바에서 DB에 연결할 수 있게 해주는 "운전사" 같은 거야
+    ## com.mysql.cj.jdbc.Driver 는 "MySQL 최신 JDBC 드라이버"의 공식 클래스 이름이야.
