@@ -1,13 +1,12 @@
 package com.fastcampus.projectvoucher;
 
-import com.fastcampus.projectvoucher.app.controller.response.EmployeeResponse;
+import com.fastcampus.projectvoucher.app.controller.employee.response.EmployeeResponse;
 import com.fastcampus.projectvoucher.domain.employee.EmployeeService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest

@@ -1,4 +1,4 @@
-package com.fastcampus.projectvoucher.app.controller.response;
+package com.fastcampus.projectvoucher.app.controller.employee.response;
 
 import java.time.LocalDateTime;
 

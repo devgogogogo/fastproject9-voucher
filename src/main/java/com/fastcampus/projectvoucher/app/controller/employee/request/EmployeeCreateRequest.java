@@ -1,4 +1,4 @@
-package com.fastcampus.projectvoucher.app.controller.request;
+package com.fastcampus.projectvoucher.app.controller.employee.request;
 
 public record EmployeeCreateRequest(
         String name,

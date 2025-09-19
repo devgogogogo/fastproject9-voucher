@@ -1,16 +1,10 @@
 package com.fastcampus.projectvoucher.domain.employee;
 
-import com.fastcampus.projectvoucher.app.controller.request.EmployeeCreateRequest;
-import com.fastcampus.projectvoucher.app.controller.response.EmployeeResponse;
+import com.fastcampus.projectvoucher.app.controller.employee.response.EmployeeResponse;
 import com.fastcampus.projectvoucher.storage.employee.EmployeeEntity;
 import com.fastcampus.projectvoucher.storage.employee.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor

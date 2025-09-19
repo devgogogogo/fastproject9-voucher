@@ -1,5 +1,6 @@
 package com.fastcampus.projectvoucher.domain.service;
 
+import com.fastcampus.projectvoucher.common.type.RequesterType;
 import com.fastcampus.projectvoucher.common.type.VoucherAmountType;
 import com.fastcampus.projectvoucher.common.type.VoucherStatusType;
 import com.fastcampus.projectvoucher.storage.voucher.VoucherEntity;
@@ -36,6 +37,28 @@ public class VoucherService {
     //상품권 사용
     @Transactional
     public void use(String code) {
+        VoucherEntity voucherEntity = voucherRepository.findByCode(code).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품권입니다."));
+        voucherEntity.use();
+    }
+
+    //상품권 발행 v2
+    @Transactional
+    public String publishV2(RequesterType requesterType, String requestId, LocalDate validFrom, LocalDate validTo, VoucherAmountType amount) {
+        final String code = UUID.randomUUID().toString().toUpperCase().replaceAll("-", "");
+        VoucherEntity voucherEntity = new VoucherEntity(code, VoucherStatusType.PUBLISH, validFrom, validTo, amount);
+        return voucherRepository.save(voucherEntity).getCode();
+    }
+
+    //상품권 사용 불가 처리 v2
+    @Transactional
+    public void disableV2(RequesterType requesterType, String requestId, String code) {
+        VoucherEntity voucherEntity = voucherRepository.findByCode(code).orElseThrow(() -> new IllegalArgumentException("존재하지 않은 상품권입니다"));
+        voucherEntity.disable();
+    }
+
+    //상품권 사용 v2
+    @Transactional
+    public void useV2(RequesterType requesterType, String requestId, String code) {
         VoucherEntity voucherEntity = voucherRepository.findByCode(code).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품권입니다."));
         voucherEntity.use();
     }

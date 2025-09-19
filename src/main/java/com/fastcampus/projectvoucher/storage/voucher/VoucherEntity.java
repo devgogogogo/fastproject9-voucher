@@ -19,6 +19,8 @@ public class VoucherEntity extends BaseEntity {
     private Long id;
 
     private String code;
+
+    @Enumerated(EnumType.STRING)
     private VoucherStatusType status;
     private LocalDate validFrom;  //사용 유효기간
     private LocalDate validTo;
