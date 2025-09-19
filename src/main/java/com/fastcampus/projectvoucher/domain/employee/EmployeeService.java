@@ -28,7 +28,7 @@ public class EmployeeService {
     //사원 조회
     public EmployeeResponse get(Long no) {
         EmployeeEntity employeeEntity = employeeRepository.findById(no).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
-       return new EmployeeResponse(employeeEntity.getId(),employeeEntity.getName(),employeeEntity.getPosition(),employeeEntity.getDepartment());
+       return new EmployeeResponse(employeeEntity.getId(),employeeEntity.getName(),employeeEntity.getPosition(),employeeEntity.getDepartment(),employeeEntity.getCreatedAt(),employeeEntity.getUpdatedAt());
     }
 
 

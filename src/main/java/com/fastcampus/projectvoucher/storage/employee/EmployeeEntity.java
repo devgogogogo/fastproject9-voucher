@@ -1,5 +1,6 @@
 package com.fastcampus.projectvoucher.storage.employee;
 
+import com.fastcampus.projectvoucher.storage.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "employee")
 @Entity
 @NoArgsConstructor
-public class EmployeeEntity {
+public class EmployeeEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
