@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -19,17 +20,16 @@ public class VoucherEntity extends BaseEntity {
 
     private String code;
     private VoucherStatusType status;
-    private LocalDateTime validFrom;  //사용 유효기간
-    private LocalDateTime validTo;
-    private String value;
+    private LocalDate validFrom;  //사용 유효기간
+    private LocalDate validTo;
     private Long amount;
 
-    public VoucherEntity(String code, VoucherStatusType status, LocalDateTime validFrom, LocalDateTime validTo, String value, Long amount) {
+    public VoucherEntity(String code, VoucherStatusType status, LocalDate validFrom, LocalDate validTo, Long amount) {
         this.code = code;
         this.status = status;
         this.validFrom = validFrom;
         this.validTo = validTo;
-        this.value = value;
+
         this.amount = amount;
     }
 }
