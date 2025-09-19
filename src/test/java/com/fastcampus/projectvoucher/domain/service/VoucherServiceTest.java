@@ -65,5 +65,31 @@ class VoucherServiceTest {
         assertThat(voucherEntity.getValidTo()).isEqualTo(validTo);
         assertThat(voucherEntity.getAmount()).isEqualTo(amount);
         assertThat(voucherEntity.getCreatedAt()).isNotEqualTo(voucherEntity.getUpdatedAt());
+
+        System.out.println("### voucherEntity.createAt() = " + voucherEntity.getCreatedAt());
+        System.out.println("### voucherEntity.updatedAt() = " + voucherEntity.getUpdatedAt());
     }
+
+    @DisplayName("발행된 상품권은 사용할 수 있다.")
+    @Test
+    void ableVoucher() {
+        //Given
+        LocalDate validFrom = LocalDate.now();
+        LocalDate validTo = LocalDate.now().plusDays(30);
+        Long amount = 10000L;
+        String code = voucherService.publish(validFrom, validTo, amount);
+
+        //When
+        voucherService.use(code);
+        VoucherEntity voucherEntity = voucherRepository.findByCode(code).get();
+
+        //Then
+        assertThat(voucherEntity.getCode()).isEqualTo(code);
+        assertThat(voucherEntity.getStatus()).isEqualTo(VoucherStatusType.USE);
+        assertThat(voucherEntity.getValidFrom()).isEqualTo(validFrom);
+        assertThat(voucherEntity.getValidTo()).isEqualTo(validTo);
+        assertThat(voucherEntity.getAmount()).isEqualTo(amount);
+        assertThat(voucherEntity.getCreatedAt()).isNotEqualTo(voucherEntity.getUpdatedAt());
+    }
+
 }
