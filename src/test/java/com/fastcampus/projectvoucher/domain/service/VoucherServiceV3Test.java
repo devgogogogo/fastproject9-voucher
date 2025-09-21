@@ -33,8 +33,6 @@ class VoucherServiceV3Test {
     void test1() {
         //Given
         RequestContext requestContext = new RequestContext(RequesterType.PARTNER, UUID.randomUUID().toString());
-        LocalDate validFrom = LocalDate.now();
-        LocalDate validTo = LocalDate.now().plusDays(30);
         VoucherAmountType amount = VoucherAmountType.KRW_30000;
 
         String contractCode = "CT0001";
@@ -62,7 +60,7 @@ class VoucherServiceV3Test {
     }
     @DisplayName("유효기간이 지난 계약으로 상품권 발행을 할 수 없습니다")
     @Test
-    void test2() {
+    void test0() {
         //Given
         RequestContext requestContext = new RequestContext(RequesterType.PARTNER, UUID.randomUUID().toString());
         VoucherAmountType amount = VoucherAmountType.KRW_30000;
@@ -76,5 +74,27 @@ class VoucherServiceV3Test {
 
     }
 
+    @DisplayName("상품권은 발행 요청자만 사용 불가 처리를 할 수 있다.")
+    @Test
+    void test2() {
+        //Given
+        RequestContext requestContext = new RequestContext(RequesterType.PARTNER, UUID.randomUUID().toString());
+        VoucherAmountType amount = VoucherAmountType.KRW_30000;
 
+        String contractCode = "CT0001";
+        String code = voucherService.publishV3(requestContext,contractCode, amount);
+
+        RequestContext otherRequestContext = new RequestContext(RequesterType.USER, UUID.randomUUID().toString());
+
+        //When
+        assertThatThrownBy(() -> voucherService.disableV3(otherRequestContext, code))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("사용 불가 처리 권한이 없는 상품권 입니다.");
+
+        //Then
+        VoucherEntity voucherEntity = voucherRepository.findByCode(code).get();
+
+        assertThat(voucherEntity.getCode()).isEqualTo(code);
+        assertThat(voucherEntity.getStatus()).isEqualTo(VoucherStatusType.PUBLISH);
+    }
 }

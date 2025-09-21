@@ -66,7 +66,13 @@ public class VoucherEntity extends BaseEntity {
         }
         this.status = VoucherStatusType.USE;
         this.histories.add(voucherHistoryEntity);
+    }
 
+    public VoucherHistoryEntity publishHistory() {
+        return histories.stream()
+                .filter(voucherHistoryEntity -> voucherHistoryEntity.getStatus().equals(VoucherStatusType.PUBLISH))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("사용 불가 처리할 수 없는 상태의 상품권 입니다."));
     }
 }
 
