@@ -3,9 +3,7 @@ package com.fastcampus.projectvoucher.domain.service;
 import com.fastcampus.projectvoucher.common.dto.RequestContext;
 import com.fastcampus.projectvoucher.common.type.VoucherAmountType;
 import com.fastcampus.projectvoucher.common.type.VoucherStatusType;
-import com.fastcampus.projectvoucher.storage.voucher.VoucherEntity;
-import com.fastcampus.projectvoucher.storage.voucher.VoucherHistoryEntity;
-import com.fastcampus.projectvoucher.storage.voucher.VoucherRepository;
+import com.fastcampus.projectvoucher.storage.voucher.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,13 +16,14 @@ import java.util.UUID;
 public class VoucherService {
 
     private final VoucherRepository voucherRepository;
+    private final ContractRepository contractRepository;
 
     // 점진적으로 리팩토링할 예정이라 v1은 그냥 null 할 것들이 있음
     //상품권 발행 v1
     @Transactional
     public String publish(LocalDate validFrom, LocalDate validTo, VoucherAmountType amount) {
         final String code = UUID.randomUUID().toString().toUpperCase().replaceAll("-", "");
-        VoucherEntity voucherEntity = new VoucherEntity(code, VoucherStatusType.PUBLISH, validFrom, validTo, amount, null);
+        VoucherEntity voucherEntity = new VoucherEntity(code, VoucherStatusType.PUBLISH, amount, null, null);
         return voucherRepository.save(voucherEntity).getCode();
     }
 
@@ -48,7 +47,7 @@ public class VoucherService {
         final String code = UUID.randomUUID().toString().toUpperCase().replaceAll("-", "");
         final String orderId = UUID.randomUUID().toString().toUpperCase().replaceAll("-", "");
         VoucherHistoryEntity voucherHistoryEntity = new VoucherHistoryEntity(orderId, requestContext.requesterType(), requestContext.requesterId(), VoucherStatusType.PUBLISH, "테스트 발행");
-        VoucherEntity voucherEntity = new VoucherEntity(code, VoucherStatusType.PUBLISH, validFrom, validTo, amount,voucherHistoryEntity);
+        VoucherEntity voucherEntity = new VoucherEntity(code, VoucherStatusType.PUBLISH, amount, voucherHistoryEntity, null);
         return voucherRepository.save(voucherEntity).getCode();
     }
 
@@ -71,5 +70,18 @@ public class VoucherService {
         VoucherHistoryEntity voucherHistoryEntity = new VoucherHistoryEntity(orderId, requestContext.requesterType(), requestContext.requesterId(), VoucherStatusType.USE, "테스트 사용");
 
         voucherEntity.use(voucherHistoryEntity);
+    }
+
+    //상품권 발행 v3
+    @Transactional
+    public String publishV3(RequestContext requestContext, String contractCode, VoucherAmountType amount) {
+        final String code = UUID.randomUUID().toString().toUpperCase().replaceAll("-", "");
+        final String orderId = UUID.randomUUID().toString().toUpperCase().replaceAll("-", "");
+
+        ContractEntity contractEntity = contractRepository.findByCode(contractCode).orElseThrow(() -> new IllegalArgumentException("존재하는 않는 계약입니다."));
+
+        VoucherHistoryEntity voucherHistoryEntity = new VoucherHistoryEntity(orderId, requestContext.requesterType(), requestContext.requesterId(), VoucherStatusType.PUBLISH, "테스트 발행");
+        VoucherEntity voucherEntity = new VoucherEntity(code, VoucherStatusType.PUBLISH, amount, voucherHistoryEntity, contractEntity);
+        return voucherRepository.save(voucherEntity).getCode();
     }
 }

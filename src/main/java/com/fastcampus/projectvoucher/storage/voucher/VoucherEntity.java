@@ -37,13 +37,19 @@ public class VoucherEntity extends BaseEntity {
     @JoinColumn(name = "voucher_id")
     private List<VoucherHistoryEntity> histories = new ArrayList<>();
 
-    public VoucherEntity(String code, VoucherStatusType status, LocalDate validFrom, LocalDate validTo, VoucherAmountType amount, VoucherHistoryEntity voucherHistoryEntity) {
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "contract_id")
+    private ContractEntity contractEntity;
+
+
+    public VoucherEntity(String code, VoucherStatusType status, VoucherAmountType amount, VoucherHistoryEntity voucherHistoryEntity, ContractEntity contractEntity) {
         this.code = code;
         this.status = status;
-        this.validFrom = validFrom;
-        this.validTo = validTo;
+        this.validFrom = LocalDate.now();
+        this.validTo = LocalDate.now().plusDays(contractEntity.getVoucherValidPeriodDayCount());
         this.amount = amount;
         this.histories.add(voucherHistoryEntity);
+        this.contractEntity = contractEntity;
     }
 
     public void disable(VoucherHistoryEntity voucherHistoryEntity) {
