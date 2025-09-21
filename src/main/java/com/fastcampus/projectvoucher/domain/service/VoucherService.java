@@ -79,6 +79,9 @@ public class VoucherService {
         final String orderId = UUID.randomUUID().toString().toUpperCase().replaceAll("-", "");
 
         ContractEntity contractEntity = contractRepository.findByCode(contractCode).orElseThrow(() -> new IllegalArgumentException("존재하는 않는 계약입니다."));
+        if (contractEntity.isExpired()) {
+            throw new IllegalStateException("유효기간이 지난 계약입니다.");
+        }
 
         VoucherHistoryEntity voucherHistoryEntity = new VoucherHistoryEntity(orderId, requestContext.requesterType(), requestContext.requesterId(), VoucherStatusType.PUBLISH, "테스트 발행");
         VoucherEntity voucherEntity = new VoucherEntity(code, VoucherStatusType.PUBLISH, amount, voucherHistoryEntity, contractEntity);

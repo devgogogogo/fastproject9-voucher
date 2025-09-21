@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 class VoucherServiceV3Test {
@@ -59,5 +60,21 @@ class VoucherServiceV3Test {
         assertThat(voucherHistoryEntity.getStatus()).isEqualTo(VoucherStatusType.PUBLISH);
         assertThat(voucherHistoryEntity.getDescription()).isEqualTo("테스트 발행");
     }
+    @DisplayName("유효기간이 지난 계약으로 상품권 발행을 할 수 없습니다")
+    @Test
+    void test2() {
+        //Given
+        RequestContext requestContext = new RequestContext(RequesterType.PARTNER, UUID.randomUUID().toString());
+        VoucherAmountType amount = VoucherAmountType.KRW_30000;
+
+        String contractCode = "CT0010";
+
+        //When
+        assertThatThrownBy(() -> voucherService.publishV3(requestContext, contractCode, amount))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("유효기간이 지난 계약입니다.");
+
+    }
+
 
 }
